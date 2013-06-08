@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -e
+
+# Source debconf library.
+#. /usr/share/debconf/confmodule
+
+#DEBHELPER#
+
+if [ "$1" = "configure" ]; then
+	php5enmod ming
+fi
+
+exit 0

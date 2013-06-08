@@ -1,0 +1,13 @@
+#!/bin/bash
+
+set -e
+
+#DEBHELPER#
+
+if [ "$1" = "remove" ]; then
+	php5dismod ming
+fi
+
+#. /usr/share/debconf/confmodule
+
+exit 0

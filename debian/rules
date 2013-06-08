@@ -1,0 +1,215 @@
+#!/usr/bin/make -f
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+# This has to be exported to make some magic below work.
+export DH_OPTIONS
+
+# These are used for cross-compiling and for saving the configure script
+# from having to guess our platform (since we know it already)
+DEB_HOST_GNU_TYPE   ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
+DEB_BUILD_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
+SOURCE_VERSION       = $(shell dpkg-parsechangelog | grep ^Version | sed "s/Version: //")
+
+#Deal with the hardening stuff
+#export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+#DPKG_EXPORT_BUILDFLAGS = 1
+#include /usr/share/dpkg/buildflags.mk
+
+PYDEF=$(shell pyversions -d)
+PYVERS=$(shell pyversions -r)
+
+CFLAGS = -Wall -g
+
+ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
+	CFLAGS += -O0
+else
+	CFLAGS += -O2
+endif
+
+configure: configure-stamp
+configure-stamp:
+	dh_testdir
+
+	$(MAKE) -f /usr/share/quilt/quilt.make patch
+
+ifneq "$(wildcard /usr/share/misc/config.sub)" ""
+	cp -f /usr/share/misc/config.sub config.sub
+endif
+ifneq "$(wildcard /usr/share/misc/config.guess)" ""
+	cp -f /usr/share/misc/config.guess config.guess
+endif
+	./autogen.sh
+
+	CFLAGS="$(CFLAGS)" ./configure \
+		--host=$(DEB_HOST_GNU_TYPE) \
+		--build=$(DEB_BUILD_GNU_TYPE) \
+		--prefix=/usr \
+		--mandir=\$${prefix}/share/man \
+		--infodir=\$${prefix}/share/info \
+		--disable-rpath \
+		--enable-perl \
+		--enable-php \
+		--enable-python
+
+	touch configure-stamp
+
+build: build-arch build-indep
+
+build-arch: build-arch-stamp
+build-arch-stamp: configure-stamp
+
+	# Add here commands to compile the arch part of the package.
+	$(MAKE)
+
+	# Some tests are missing upstream, so this fails
+	#$(MAKE) check
+
+	touch build-arch-stamp
+
+build-indep: build-indep-stamp
+build-indep-stamp: configure-stamp build-arch-stamp
+
+	$(SHELL) debian/mkfontset ttf-dejavu
+	#Move file name to be the same as in 0.3.0 for compatability
+	mv fonts/ttf-dejavu/fdb/DejaVuSans-BoldOblique.fdb "fonts/ttf-dejavu/fdb/DejaVu Sans-B-I.fdb"
+	mv fonts/ttf-dejavu/fdb/DejaVuSans-Bold.fdb "fonts/ttf-dejavu/fdb/DejaVu Sans-B.fdb"
+	mv fonts/ttf-dejavu/fdb/DejaVuSans-Oblique.fdb "fonts/ttf-dejavu/fdb/DejaVu Sans-I.fdb"
+	mv fonts/ttf-dejavu/fdb/DejaVuSans.fdb "fonts/ttf-dejavu/fdb/DejaVu Sans.fdb"
+	mv fonts/ttf-dejavu/fdb/DejaVuSansMono-BoldOblique.fdb "fonts/ttf-dejavu/fdb/DejaVu Sans Mono-B-I.fdb"
+	mv fonts/ttf-dejavu/fdb/DejaVuSansMono-Bold.fdb "fonts/ttf-dejavu/fdb/DejaVu Sans Mono-B.fdb"
+	mv fonts/ttf-dejavu/fdb/DejaVuSansMono-Oblique.fdb "fonts/ttf-dejavu/fdb/DejaVu Sans Mono-I.fdb"
+	mv fonts/ttf-dejavu/fdb/DejaVuSansMono.fdb "fonts/ttf-dejavu/fdb/DejaVu Sans Mono.fdb"
+	mv fonts/ttf-dejavu/fdb/DejaVuSerif-BoldItalic.fdb "fonts/ttf-dejavu/fdb/DejaVu Serif-B-I.fdb"
+	mv fonts/ttf-dejavu/fdb/DejaVuSerif-Bold.fdb "fonts/ttf-dejavu/fdb/DejaVu Serif-B.fdb"
+	mv fonts/ttf-dejavu/fdb/DejaVuSerif-Italic.fdb "fonts/ttf-dejavu/fdb/DejaVu Serif-I.fdb"
+	mv fonts/ttf-dejavu/fdb/DejaVuSerif.fdb "fonts/ttf-dejavu/fdb/DejaVu Serif.fdb"
+
+	$(SHELL) debian/mkfontset openoffice opensymbol
+	#Move file name to be the same as in 0.3.0 for compatability
+	mv fonts/opensymbol/fdb/opens___.fdb fonts/opensymbol/fdb/OpenSymbol.fdb
+
+	touch build-indep-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+
+	if [ -f Makefile ] ;\
+	then	\
+	$(MAKE) clean; \
+	fi
+	rm -f macros/libtool.m4 macros/ltoptions.m4 macros/ltsugar.m4 macros/ltversion.m4 macros/lt~obsolete.m4
+	rm -f config/ltmain.sh
+
+	rm -rf fonts
+	rm -f build-arch-stamp build-indep-stamp configure-stamp
+
+	# Add here commands to clean up after the build process.
+	rm -f libming-util.1
+	if [ -f Makefile ]; then $(MAKE) distclean; fi
+	rm -f config.log config.sub config.guess
+
+	$(MAKE) -f /usr/share/quilt/quilt.make unpatch
+
+	dh_clean 
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_prep -a 
+	dh_installdirs -a
+
+	# Add here commands to install the arch part of the package into 
+	# debian/tmp.
+	$(MAKE) install prefix=$(CURDIR)/debian/tmp/usr
+
+	chrpath -d debian/tmp/usr/lib/perl5/auto/SWF/SWF.so
+	chrpath -d debian/tmp/usr/lib/php5/*/ming.so
+
+	# 0.4.5 has the man pages we were mising
+	docbook-to-man debian/libming-util.sgml > libming-util.1
+	dh_installman -p libming-util libming-util.1
+
+#	# Perl extension
+#	strip --remove-section=.comment --remove-section=.note --strip-unneeded debian/tmp/usr/lib/perl5/auto/SWF/SWF.so
+
+	# install Python extension
+	for python in $(PYVERS); do \
+		python=$$(echo $$python | sed "s/$(PYDEF)/python/"); \
+		(cd py_ext;$$python setup.py install --root=../debian/tmp --install-layout=deb; )\
+	done
+
+	install -d debian/php5-ming/etc/php5/mods-available
+	install -m 644 -o root -g root debian/ming.ini debian/php5-ming/etc/php5/mods-available/ming.ini
+
+	# Ming format fonts
+	install -d debian/tmp/usr/share/ming/fonts
+	cp -a fonts debian/tmp/usr/share/ming
+
+	# Documentation
+	install -d debian/tmp/usr/share/man/man1
+	ln -fs libming-util.1.gz debian/tmp/usr/share/man/man1/listaction.1.gz
+	ln -fs libming-util.1.gz debian/tmp/usr/share/man/man1/listaction_d.1.gz
+	ln -fs libming-util.1.gz debian/tmp/usr/share/man/man1/listswf.1.gz
+	ln -fs libming-util.1.gz debian/tmp/usr/share/man/man1/listswf_d.1.gz
+
+	cd docs/man && $(MAKE) install-man prefix=$(CURDIR)/debian/tmp/usr
+
+binary-arch: install
+	dh_testdir
+	dh_testroot
+
+	dh_installdocs -s
+	# These man pages are empty, so remove them 
+	rm -f debian/libswf-perl/usr/share/man/man3/SWF::BrowserFont.3pm.gz
+	rm -f debian/libswf-perl/usr/share/man/man3/SWF::Character.3pm.gz
+	rm -f debian/libswf-perl/usr/share/man/man3/SWF::Fill.3pm.gz
+	rm -f debian/libswf-perl/usr/share/man/man3/SWF::Font.3pm.gz
+	rm -f debian/libswf-perl/usr/share/man/man3/SWF::FontCollection.3pm.gz
+	rm -f debian/libswf-perl/usr/share/man/man3/SWF::Gradient.3pm.gz
+	rm -f debian/libswf-perl/usr/share/man/man3/SWF::SoundInstance.3pm.gz
+	rm -f debian/libswf-perl/usr/share/man/man3/SWF::SoundStream.3pm.gz
+	rm -f debian/libswf-perl/usr/share/man/man3/SWF::Text.3pm.gz
+	# Put the perl man pages in the perl package
+	mv debian/tmp/usr/share/man/man3/SWF::* debian/libswf-perl/usr/share/man/man3
+	mv debian/tmp/usr/share/man/man3/SWF.3pm* debian/libswf-perl/usr/share/man/man3
+	dh_install -s --list-missing -v
+	dh_installchangelogs -s
+	dh_installman -s
+	dh_lintian -s
+	dh_link -s
+	dh_strip -s
+	dh_compress -s
+	dh_fixperms -s
+	dh_perl -s perl_ext
+	dh_python2 -s
+	dh_makeshlibs -s
+	dh_shlibdeps -s
+	echo "php:Depends=phpapi-`php-config5 --phpapi`" >> debian/php5-ming.substvars
+	dh_installdeb -s
+
+	dh_gencontrol -s
+	dh_md5sums -s
+	dh_builddeb -s
+
+binary-indep: install
+	dh_testdir
+	dh_testroot
+
+	dh_installdocs -i
+	dh_installchangelogs -i
+	dh_installman -i
+	dh_link -i
+	dh_install -i --list-missing
+	dh_compress -i
+	dh_fixperms -i
+	dh_installdeb -i
+	dh_gencontrol -i
+	dh_md5sums -i
+	dh_builddeb -i
+
+binary: binary-indep binary-arch
+
+.PHONY: build clean binary-arch binary-indep binary install install-arch 
