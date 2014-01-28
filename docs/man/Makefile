@@ -48,8 +48,8 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-build_triplet = i486-pc-linux-gnu
-host_triplet = i486-pc-linux-gnu
+build_triplet = i686-pc-linux-gnu
+host_triplet = i686-pc-linux-gnu
 subdir = docs/man
 DIST_COMMON = $(dist_man1_MANS) $(dist_man3_MANS) \
 	$(srcdir)/Makefile.am $(srcdir)/Makefile.in
@@ -112,21 +112,21 @@ man3dir = $(mandir)/man3
 NROFF = nroff
 MANS = $(dist_man1_MANS) $(dist_man3_MANS)
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
-ACLOCAL = ${SHELL} /home/anderson/alioth/ming/config/missing --run aclocal-1.11
+ACLOCAL = ${SHELL} /home/anderson/ming/libming/config/missing --run aclocal-1.11
 AMTAR = $${TAR-tar}
 AM_DEFAULT_VERBOSITY = 0
 AR = ar
-AUTOCONF = ${SHELL} /home/anderson/alioth/ming/config/missing --run autoconf
-AUTOHEADER = ${SHELL} /home/anderson/alioth/ming/config/missing --run autoheader
-AUTOMAKE = ${SHELL} /home/anderson/alioth/ming/config/missing --run automake-1.11
+AUTOCONF = ${SHELL} /home/anderson/ming/libming/config/missing --run autoconf
+AUTOHEADER = ${SHELL} /home/anderson/ming/libming/config/missing --run autoheader
+AUTOMAKE = ${SHELL} /home/anderson/ming/libming/config/missing --run automake-1.11
 AWK = gawk
-CC = i486-linux-gnu-gcc
+CC = gcc
 CCDEPMODE = depmode=gcc3
-CFLAGS = -Wall -g -O2 -Wall -DSWF_LITTLE_ENDIAN
-CPP = i486-linux-gnu-gcc -E
+CFLAGS = -g -O2 -Wall -DSWF_LITTLE_ENDIAN
+CPP = gcc -E
 CPPFLAGS = 
-CXX = i486-linux-gnu-g++
-CXXCPP = i486-linux-gnu-g++ -E
+CXX = g++
+CXXCPP = g++ -E
 CXXDEPMODE = depmode=gcc3
 CXXFLAGS = -g -O2
 CYGPATH_W = echo
@@ -152,7 +152,7 @@ INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
 INTERFACE_AGE = 4
 INTERFACE_CURRENT = 5
-INTERFACE_REVISION = 5
+INTERFACE_REVISION = 4
 LD = /usr/bin/ld
 LDFLAGS = 
 LEX = flex
@@ -164,7 +164,7 @@ LN_S = ln -s
 LTLIBOBJS = 
 MAINT = #
 MAJOR_VERSION = 0
-MAKEINFO = ${SHELL} /home/anderson/alioth/ming/config/missing --run makeinfo
+MAKEINFO = ${SHELL} /home/anderson/ming/libming/config/missing --run makeinfo
 MANIFEST_TOOL = :
 MATHLIB = -lm
 MICRO_VERSION = 5
@@ -190,17 +190,17 @@ PHP = /usr/bin/php
 PHPIZE = /usr/bin/phpize
 PNGLIB = -lpng
 PYTHON = /usr/bin/python
-PYTHON_CPPFLAGS = -I/usr/include/python2.7
-PYTHON_EXTRA_LDFLAGS = -Xlinker -export-dynamic -Wl,-O1 -Wl,-Bsymbolic-functions
-PYTHON_EXTRA_LIBS = -L/usr/lib -lz -lpthread -ldl  -lutil
-PYTHON_LDFLAGS = -L/usr/lib/python2.7 -lpython2.7
-PYTHON_SITE_PKG = /usr/lib/python2.7/dist-packages
+PYTHON_CPPFLAGS = 
+PYTHON_EXTRA_LDFLAGS = 
+PYTHON_EXTRA_LIBS = 
+PYTHON_LDFLAGS = 
+PYTHON_SITE_PKG = 
 PYTHON_VERSION = 
 RANLIB = ranlib
 SED = /bin/sed
 SET_MAKE = 
 SHCFLAGS = 
-SHELL = /bin/bash
+SHELL = /bin/sh
 STRIP = strip
 TCL = /usr/bin/tclsh
 TCL_INC_DIR = 
@@ -209,13 +209,13 @@ VERSION = 0.4.5
 XLIB = 
 YACC = bison -y
 ZLIB = -lz
-abs_builddir = /home/anderson/alioth/ming/docs/man
-abs_srcdir = /home/anderson/alioth/ming/docs/man
-abs_top_builddir = /home/anderson/alioth/ming
-abs_top_srcdir = /home/anderson/alioth/ming
+abs_builddir = /home/anderson/ming/libming/docs/man
+abs_srcdir = /home/anderson/ming/libming/docs/man
+abs_top_builddir = /home/anderson/ming/libming
+abs_top_srcdir = /home/anderson/ming/libming
 ac_ct_AR = ar
-ac_ct_CC = 
-ac_ct_CXX = 
+ac_ct_CC = gcc
+ac_ct_CXX = g++
 ac_ct_DUMPBIN = 
 am__include = include
 am__leading_dot = .
@@ -223,9 +223,9 @@ am__quote =
 am__tar = $${TAR-tar} chof - "$$tardir"
 am__untar = $${TAR-tar} xf -
 bindir = ${exec_prefix}/bin
-build = i486-pc-linux-gnu
-build_alias = i486-linux-gnu
-build_cpu = i486
+build = i686-pc-linux-gnu
+build_alias = 
+build_cpu = i686
 build_os = linux-gnu
 build_vendor = pc
 builddir = .
@@ -235,24 +235,24 @@ docdir = ${datarootdir}/doc/${PACKAGE_TARNAME}
 dvidir = ${docdir}
 exec_prefix = ${prefix}
 ft_config = /usr/bin/freetype-config
-host = i486-pc-linux-gnu
-host_alias = i486-linux-gnu
-host_cpu = i486
+host = i686-pc-linux-gnu
+host_alias = 
+host_cpu = i686
 host_os = linux-gnu
 host_vendor = pc
 htmldir = ${docdir}
 includedir = ${prefix}/include
-infodir = ${prefix}/share/info
-install_sh = ${SHELL} /home/anderson/alioth/ming/config/install-sh
+infodir = ${datarootdir}/info
+install_sh = ${SHELL} /home/anderson/ming/libming/config/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
 localstatedir = ${prefix}/var
-mandir = ${prefix}/share/man
+mandir = ${datarootdir}/man
 mkdir_p = /bin/mkdir -p
 oldincludedir = /usr/include
 pdfdir = ${docdir}
-prefix = /usr
+prefix = /usr/local
 program_transform_name = s,x,x,
 psdir = ${docdir}
 sbindir = ${exec_prefix}/sbin
@@ -281,18 +281,7 @@ dist_man1_MANS = \
 	swftotcl.1
 
 dist_man3_MANS = \
-	destroySWFAction.3		\
-	destroySWFBinaryData.3		\
-	destroySWFBitmap.3		\
-	destroySWFBrowserFont.3		\
-	destroySWFCXform.3		\
 	destroySWFMovie.3		\
-	destroySWFMovieClip.3		\
-	destroySWFPrebuiltClip.3	\
-	destroySWFSoundInstance.3	\
-	dumpJpegBlock.3			\
-	getMP3Duration.3		\
-	getMP3Flags.3			\
 	Ming_getScale.3			\
 	Ming_init.3			\
 	Ming_setCubicThreshold.3	\
@@ -301,169 +290,33 @@ dist_man3_MANS = \
 	Ming_setSWFCompression.3	\
 	Ming_setWarnFunction.3		\
 	Ming_useSWFVersion.3		\
-	newBevelFilter.3		\
-	newBlurFilter.3			\
-	newColorMatrixFilter.3		\
-	newConvolutionFilter.3		\
-	newDropShadowFilter.3		\
-	newGlowFilter.3			\
-	newGradientBevelFilter.3	\
-	newGradientGlowFilter.3		\
-	newSizedSWFOutput.3		\
-	newSWFAction.3			\
-	newSWFAction_fromFile.3		\
-	newSWFAddCXform.3		\
-	newSWFBinaryData.3		\
-	newSWFBlur.3			\
-	newSWFBrowserFont.3		\
-	newSWFCXform.3			\
-	newSWFFilterMatrix.3		\
-	newSWFFontCollection_fromFile.3	\
-	newSWFFont_fromFile.3		\
-	newSWFInitAction.3		\
-	newSWFInitAction_withId.3	\
-	newSWFInput_allocedBuffer.3	\
-	newSWFInput_bufferCopy.3	\
-	newSWFJpegWithAlpha_fromInput.3	\
-	newSWFLineStyle2.3		\
-	newSWFLineStyle2_filled.3	\
-	newSWFLineStyle.3		\
-	newSWFMatrix.3			\
 	newSWFMovie.3			\
-	newSWFMovieClip.3		\
 	newSWFMovieWithVersion.3	\
-	newSWFMultCXform.3		\
-	newSWFPlaceObjectBlock.3	\
-	newSWFPosition.3		\
-	newSWFPrebuiltClip_fromFile.3	\
-	newSWFPrebuiltClip_fromInput.3	\
-	newSWFShadow.3			\
 	newSWFShapeFromBitmap.3		\
-	newSWFSound.3			\
-	newSWFSoundFromFileno.3		\
-	newSWFSound_fromSoundStream.3	\
-	newSWFSoundInstance.3		\
-	newSWFText2.3			\
 	newSWFVideoStream.3		\
 	newSWFVideoStream_fromFile.3	\
 	newSWFVideoStream_fromInput.3	\
-	readMP3Header.3			\
-	SWFAction_compile.3		\
-	SWFAction_getByteCode.3		\
-	SWFAction_setDebug.3		\
-	SWFBlock_isCharacter.3		\
-	SWFBlockList_getLastBlock.3	\
-	SWFButton_addAction.3		\
-	SWFButton_addCharacter.3	\
-	SWFButton_addShape.3		\
-	SWFButtonRecord_addFilter.3	\
-	SWFButtonRecord_setBlendMode.3	\
-	SWFButton_removeScalingGrid.3	\
-	SWFButton_setScalingGrid.3	\
-	SWFCharacter_getHeight.3	\
-	SWFCharacter_getWidth.3		\
-	SWFCXform_setColorAdd.3		\
-	SWFCXform_setColorMult.3	\
-	SWFDisplayItem_addFilter.3	\
-	SWFDisplayItem_cacheAsBitmap.3	\
-	SWFDisplayItem_flush.3		\
-	SWFDisplayItem_get_x.3		\
-	SWFDisplayItem_setBlendMode.3	\
-	SWFDisplayItem_setMaskLevel.3	\
-	SWFDisplayItem_setName.3	\
-	SWFFontCharacter_addAllChars.3	\
-	SWFFontCharacter_addChars.3	\
-	SWFFontCharacter_addUTF8Chars.3	\
-	SWFFont_getScaledAscent.3	\
-	SWFGradient_addEntry.3		\
-	SWFGradient_setFocalPoint.3	\
-	SWFGradient_setInterpolationMode.3	\
-	SWFGradient_setSpreadMode.3	\
-	SWFMatrix_leftMultiply.3	\
-	SWFMatrix_multiply.3		\
 	SWFMovie_add.3			\
-	SWFMovie_addExport.3		\
-	SWFMovie_addFont.3		\
-	SWFMovie_add_internal.3		\
-	SWFMovie_addMetadata.3		\
-	SWFMovie_assignSymbol.3		\
-	SWFMovieClip_add.3		\
-	SWFMovieClip_addInitAction.3	\
-	SWFMovieClip_labelFrame.3	\
-	SWFMovieClip_nextFrame.3	\
-	SWFMovieClip_remove.3		\
-	SWFMovieClip_removeScalingGrid.3\
-	SWFMovieClip_setNumberOfFrames.3\
-	SWFMovieClip_setScalingGrid.3	\
-	SWFMovieClip_setSoundStream.3	\
-	SWFMovieClip_setSoundStreamAt.3	\
-	SWFMovieClip_startSound.3	\
-	SWFMovieClip_stopSound.3	\
-	SWFMovie_defineScene.3		\
-	SWFMovie_getRate.3		\
-	SWFMovie_importCharacter.3	\
-	SWFMovie_importFont.3		\
 	SWFMovie_labelFrame.3		\
 	SWFMovie_namedAnchor.3		\
-	SWFMovie_nextFrame.3		\
-	SWFMovie_output.3		\
-	SWFMovie_output_to_stream.3	\
 	SWFMovie_protect.3		\
-	SWFMovie_remove.3		\
-	SWFMovie_replace_internal.3	\
-	SWFMovie_save.3			\
-	SWFMovie_setBackground.3	\
 	SWFMovie_setDimension.3		\
-	SWFMovie_setNetworkAccess.3	\
 	SWFMovie_setNumberOfFrames.3	\
+	SWFMovie_setBackground.3	\
 	SWFMovie_setRate.3		\
-	SWFMovie_setScriptLimits.3	\
-	SWFMovie_setSoundStream.3	\
-	SWFMovie_setSoundStreamAt.3	\
-	SWFMovie_setTabIndex.3		\
-	SWFMovie_startSound.3		\
-	SWFMovie_stopSound.3		\
-	SWFMovie_writeExports.3		\
-	SWFOutput_checkSize.3		\
-	SWFOutput_writeFloat16.3	\
-	SWFPlaceObject2Block_addFilter.3	\
-	SWFPlaceObject2Block_setBlendMode.3	\
-	SWFPlaceObject2Block_setCacheFlag.3	\
-	SWFRect_includePoint.3		\
+	SWFDisplayItem_addFilter.3	\
+	SWFDisplayItem_cacheAsBitmap.3	\
+	SWFDisplayItem_get_x.3		\
+	SWFDisplayItem_setBlendMode.3	\
 	SWFShape_drawArc.3		\
 	SWFShape_drawCubic.3		\
 	SWFShape_drawScaledLineTo.3	\
-	SWFShape_getVersion.3		\
 	SWFShape_movePenTo.3		\
 	SWFShape_moveScaledPenTo.3	\
-	SWFShape_setLine2.3		\
-	SWFShape_setLine2Filled.3	\
-	SWFShape_setLine.3		\
-	SWFShape_setLineStyle2filled_internal.3	\
-	SWFShape_setLineStyle2_internal.3	\
-	SWFShape_setLineStyle_internal.3	\
-	SWFShape_setRenderHintingFlags.3	\
-	SWFShape_useVersion.3		\
-	SWFSoundInstance_addEnvelope.3	\
-	SWFSoundInstance_setLoopCount.3	\
-	SWFSoundInstance_setLoopInPoint.3	\
-	SWFSoundInstance_setLoopOutPoint.3	\
-	SWFSoundInstance_setNoMultiple.3\
-	SWFSoundStream_getDuration.3	\
-	SWFSoundStream_getFrames.3	\
-	SWFSoundStream_rewind.3		\
-	SWFText_addWideString.3		\
-	SWFTextField_setFont.3		\
-	SWFTextField_setFontCharacter.3	\
-	SWFText_resolveCodes.3		\
 	SWFVideoStream_getNumFrames.3	\
 	SWFVideoStream_getVideoFrame.3	\
 	SWFVideoStream_hasAudio.3	\
-	SWFVideoStream_nextFrame.3	\
-	SWFVideoStream_seek.3		\
-	SWFVideoStream_setDimension.3	\
-	SWFVideoStream_setFrameMode.3	\
-	writeSWFButtonSoundToMethod.3	
+	SWFVideoStream_setDimension.3	
 
 all: all-am
 

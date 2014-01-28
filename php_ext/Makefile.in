@@ -649,8 +649,8 @@ uninstall-am: uninstall-pkglibLTLIBRARIES
 
 
 install: all
-	$(INSTALL) -d `dirname $(prefix)`/`php-config --extension-dir`
-	$(INSTALL) -m 755 .libs/ming.so `dirname $(prefix)`/`php-config --extension-dir`
+	$(INSTALL) -d "$(DESTDIR)"/`php-config --extension-dir`
+	$(INSTALL) -m 755 .libs/ming.so "$(DESTDIR)"/`php-config --extension-dir`
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

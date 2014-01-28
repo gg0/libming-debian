@@ -443,7 +443,7 @@ clean-local:
 	rm -Rf test.swf build
 
 install:
-	$(PYTHON) setup.py install --prefix $(prefix) --root `dirname $(prefix)`
+	$(PYTHON) setup.py install --prefix $(prefix) --root "/$(DESTDIR)"
 
 test.swf:
 	$(PYTHON) shape.py
