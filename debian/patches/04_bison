@@ -1,0 +1,113 @@
+Description: Fix build with recent bison versions.
+Author: Gabriele Giacone <1o5g4r8o@gmail.com>
+Origin: upstream, https://github.com/libming/libming/commit/8745e080324be997b2eaebc7bd9c0284130d55ff
+
+--- a/src/actioncompiler/compile.h
++++ b/src/actioncompiler/compile.h
+@@ -17,7 +17,7 @@ extern int swfVersion;
+ typedef struct _buffer *Buffer;
+ 
+ /* shut up bison.simple */
+-void yyerror(char *msg);
++void yyerror(void *buffer, char *msg);
+ int yylex();
+ 
+ #ifndef max
+--- a/src/actioncompiler/swf4compiler.y
++++ b/src/actioncompiler/swf4compiler.y
+@@ -16,6 +16,8 @@
+ 
+ %}
+ 
++%parse-param {void *buffer}
++
+ %union {
+   Buffer action;
+   char *str;
+--- a/src/actioncompiler/swf5compiler.y
++++ b/src/actioncompiler/swf5compiler.y
+@@ -25,6 +25,8 @@ static int classContext = 0;
+ 
+ %}
+ 
++%parse-param {void *buffer}
++
+ %union
+ {
+   Buffer action;
+@@ -261,7 +263,7 @@ class_init
+ 	{
+ 		if(classContext)
+ 		{
+-			swf5error("Nested classes are not allowed\n");
++			swf5error(NULL, "Nested classes are not allowed\n");
+ 			YYABORT;
+ 		}
+ 		classContext = 1;
+@@ -391,7 +393,7 @@ return_stmt
+ 		{ int tmp = chkctx(CTX_FUNCTION);
+ 		  if(tmp < 0) 
+ 		  {
+-			swf5error("return outside function");
++			swf5error(NULL, "return outside function");
+ 			YYABORT;
+ 		  }
+ 		  $$ = newBuffer();
+@@ -404,7 +406,7 @@ return_stmt
+ 		{ int tmp = chkctx(CTX_FUNCTION);
+ 		  if(tmp < 0)
+ 		  {
+-			swf5error("return outside function");
++			swf5error(NULL, "return outside function");
+ 			YYABORT;
+ 		  }
+ 		  $$ = newBuffer();
+@@ -877,7 +879,7 @@ cont_stmt
+ 		{ 
+ 		  if(chkctx(CTX_CONTINUE) < 0)
+ 		  {
+-			swf5error("continue outside loop");
++			swf5error(NULL, "continue outside loop");
+ 			YYABORT;
+ 		  }
+ 		  $$ = newBuffer();
+@@ -905,7 +907,7 @@ break_stmt
+ 		  }
+ 		  else
+ 		  {
+-			swf5error("break outside switch / loop");
++			swf5error(NULL, "break outside switch / loop");
+ 			YYABORT;
+ 		  }
+ 		}
+@@ -1603,7 +1605,7 @@ primary
+ 		{
+ 			if($1->name != NULL)
+ 			{
+-				swf5error("anonymous decl only. identifier not allowed");
++				swf5error(NULL, "anonymous decl only. identifier not allowed");
+ 				YYABORT;
+ 			}
+ 			$$ = newBuffer();
+--- a/src/actioncompiler/swf4compiler.flex
++++ b/src/actioncompiler/swf4compiler.flex
+@@ -9,7 +9,7 @@
+ #include "blocks/error.h"
+ #include "swf4compiler.tab.h" /* defines token types */
+ 
+-static int swf4debug;
++extern int swf4debug;
+ 
+ static const char *lexBuffer = NULL;
+ static int lexBufferLen = 0;
+--- a/src/actioncompiler/swf5compiler.flex
++++ b/src/actioncompiler/swf5compiler.flex
+@@ -9,7 +9,7 @@
+ #include "blocks/error.h"
+ #include "swf5compiler.tab.h" /* defines token types */
+ 
+-static int swf5debug;
++extern int swf5debug;
+ 
+ static const char *lexBuffer = NULL;
+ static int lexBufferLen = 0;

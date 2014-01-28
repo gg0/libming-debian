@@ -1,0 +1,17 @@
+Description: Fix build on GNU/Hurd
+Author: Gabriele Giacone <1o5g4r8o@gmail.com>
+Origin: upstream, https://github.com/libming/libming/commit/f079175192199c912ee9de4e56182e4c2a7acc8b
+
+--- a/src/ming.h.in
++++ b/src/ming.h.in
+@@ -47,6 +47,10 @@ extern "C" {
+ #define MING_VERSION        @MAJOR_VERSION@.@MINOR_VERSION@.@MICRO_VERSION@
+ #define MING_VERSION_TEXT  "@MAJOR_VERSION@.@MINOR_VERSION@.@MICRO_VERSION@"
+ 
++#ifndef PATH_MAX
++#define PATH_MAX 4096
++#endif
++
+ /***** Type definitions - avoid cyclic dependencies ****/
+ 
+ typedef unsigned char byte;
