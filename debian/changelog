@@ -4,6 +4,7 @@ ming (1:0.4.5-1.1) UNRELEASED; urgency=medium
   * Fix FTBFS due to ungif linking (Closes: #733373).
   * Fix FTBFS on Hurd and against recent bison versions (Closes: #736162).
   * Strip non debian/ files.
+  * Switch from superseded automake1.10 to automake.
 
  -- Gabriele Giacone <1o5g4r8o@gmail.com>  Tue, 28 Jan 2014 18:06:36 +0100
 

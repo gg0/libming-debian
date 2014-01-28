@@ -2,7 +2,7 @@ Source: ming
 Section: libs
 Priority: optional
 Maintainer: Stuart R. Anderson <anderson@netsweng.com>
-Build-Depends: debhelper (>= 5.0.37.2), docbook-to-man, swig, python-all-dev (>= 2.7.3), libgif-dev, libpng-dev, libz-dev, perl (>= 5.10.0), autotools-dev, flex, bison, libfreetype6-dev, ttf-dejavu, ttf-opensymbol, php5-dev, php5-cli, automake1.10, autoconf2.59, quilt, chrpath
+Build-Depends: debhelper (>= 5.0.37.2), docbook-to-man, swig, python-all-dev (>= 2.7.3), libgif-dev, libpng-dev, libz-dev, perl (>= 5.10.0), autotools-dev, flex, bison, libfreetype6-dev, ttf-dejavu, ttf-opensymbol, php5-dev, php5-cli, automake, autoconf2.59, quilt, chrpath
 Standards-Version: 3.9.3
 Homepage: http://www.libming.net/
 
