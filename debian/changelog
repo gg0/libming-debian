@@ -3,7 +3,7 @@ ming (1:0.4.5-1.1) unstable; urgency=medium
   * Non-maintainer upload.
   * Fix FTBFS due to ungif linking (Closes: #733373).
   * Fix FTBFS on Hurd and against recent bison versions (Closes: #736162).
-  * Switch from superseded automake1.10 to automake.
+  * Switch from superseded automake1.10 to automake (Closes: #724417).
 
  -- Gabriele Giacone <1o5g4r8o@gmail.com>  Tue, 28 Jan 2014 19:16:47 +0100
 
