@@ -9,16 +9,3 @@
  
  test.swf:
  	$(PYTHON) shape.py
---- a/py_ext/setup.py.in
-+++ b/py_ext/setup.py.in
-@@ -18,10 +18,6 @@ if "@ZLIB@":
- if "@PNGLIB@":
- 	mylibs.append('png')
- 
--if "@GIFLIB@":
--	mylibs.append("ungif")
--
--
- setup(name = "mingc", version = "@MING_VERSION@",
-       package_dir = {'': srcdir},
-       py_modules = ['ming', 'mingc'],
